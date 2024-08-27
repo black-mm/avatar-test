@@ -11,12 +11,6 @@
 </template>
 
 <script setup lang='ts'>
-import { log } from 'console';
-import { off } from 'process';
-import { onMounted, ref } from 'vue';
-
-let svgContent = ref('')
-
 let frown = `  <g transform="translate(75, 160)">
     <title>mouth - frown</title>
     <path
