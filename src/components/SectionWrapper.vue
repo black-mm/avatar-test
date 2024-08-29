@@ -12,9 +12,14 @@ let props = defineProps(['title'])
 </script>
 
 <style scoped lang='scss'>
-.title {
-    font-size: 16px;
-    font-weight: bold;
-    padding: 20px;
+.setting-section {
+    padding: 1.8rem 1rem;
+
+    .title {
+        margin-bottom: 1.5rem;
+        font-weight: bold;
+        line-height: 23px;
+        color: hsl(211, 19%, 70%);
+    }
 }
 </style>

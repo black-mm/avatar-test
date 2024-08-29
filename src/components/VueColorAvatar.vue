@@ -11,6 +11,9 @@
 </template>
 
 <script setup lang='ts'>
+import {useStore} from '@/store/index.ts'
+let store = useStore()
+
 let frown = `  <g transform="translate(75, 160)">
     <title>mouth - frown</title>
     <path
@@ -101,9 +104,10 @@ let detached = `<g transform="translate(2.5, 129)">
 let svgOptions:{
     [key:string]:number | string
 } = {
-    mounth:'123',
+    mounth:'',
     ear:'',
 }
+let svgContent = ref('')
 
 let optionChange = (type:string, svgValue:string) => {
     svgOptions[type]= svgValue
@@ -123,6 +127,7 @@ let optionChange = (type:string, svgValue:string) => {
 }   
 
 onMounted(() => {
+  console.log(store.count)
 })
 
 </script>
@@ -131,7 +136,6 @@ onMounted(() => {
     width: 280px;
     height: 280px;
     border-radius: 25px;
-    // background-color: pink;
     border: 1px solid pink;
     background-color: #fff;
 }
