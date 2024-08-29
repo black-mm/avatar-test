@@ -1,20 +1,42 @@
 <template>
     <ul :class="[className]">
-        <li v-for="item, index in group" :key="index" @click="activeChange(index)">
+        <li v-for="item, index in group" :key="index">
             <div :class="['item', item.shape, { 'active': currentIndex === index }]"
-                :style="{ 'background-color': item.color }">
+                :style="{ 'background-color': item.color }" @click="itemChange(index, item)">
             </div>
         </li>
     </ul>
 </template>
 
 <script setup lang='ts'>
+import { useStore } from '@/store/index.ts'
+
+let Store = useStore()
 let props = defineProps(['group', 'className'])
+
 let currentIndex = ref(0)
 
-let activeChange = (index) => {
+let itemChange = (index: number, item) => {
     currentIndex.value = index
+    if (props.className === 'shape-container') {
+        Store.avatarShape = item.shape
+    }else if(props.className === 'border-container'){
+        Store.avatarBorder = item.color
+    }
 }
+onMounted(() => {
+    if (props.className === 'shape-container') {
+        if (Store.avatarShape == 'circle') {
+            currentIndex.value = 0
+        } else if (Store.avatarShape == 'square') {
+            currentIndex.value = 1
+        } else {
+            currentIndex.value = 2
+        }
+    }else if(props.className === 'border-container'){
+        
+    }
+})
 </script>
 
 <style scoped lang='scss'>
@@ -28,6 +50,7 @@ ul {
         width: 24px;
         height: 24px;
         background-color: hsl(211, 19%, 70%);
+        cursor: pointer;
     }
 
     .circle {
@@ -52,6 +75,7 @@ ul {
         border-radius: 50%;
         position: relative;
         box-shadow: 0 0 0.05em 0.2em hsl(216, 14%, 14%);
+        cursor: pointer;
 
         &.transparent {
             background: #fff !important;

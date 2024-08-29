@@ -1,18 +1,19 @@
 <template>
-    <div class="vue-color-avatar">
-        <div class="avatar-payload" v-html="svgContent"></div>
-    </div>
-    <div class="options">
-        <img src="@/assets/preview/mouth/frown.svg" alt="" @click="optionChange('mounth', frown)">
-        <img src="@/assets/preview/mouth/laughing.svg" alt="" @click="optionChange('mounth', laughing)">
-        <img src="@/assets/preview/ear/attached.svg" alt="" @click="optionChange('ear', attached)">
-        <img src="@/assets/preview/ear/detached.svg" alt="" @click="optionChange('ear', detached)">
-    </div>
+  <div class="vue-color-avatar" :class="avatarClassObj" :style="avatarStyleObj">
+    <div class="avatar-payload" v-html="svgContent"></div>
+  </div>
+  <div class="options">
+    <img src="@/assets/preview/mouth/frown.svg" alt="" @click="optionChange('mounth', frown)">
+    <img src="@/assets/preview/mouth/laughing.svg" alt="" @click="optionChange('mounth', laughing)">
+    <img src="@/assets/preview/ear/attached.svg" alt="" @click="optionChange('ear', attached)">
+    <img src="@/assets/preview/ear/detached.svg" alt="" @click="optionChange('ear', detached)">
+  </div>
 </template>
 
 <script setup lang='ts'>
-import {useStore} from '@/store/index.ts'
-let store = useStore()
+import { useStore } from '@/store/index.ts'
+
+let Store = useStore()
 
 let frown = `  <g transform="translate(75, 160)">
     <title>mouth - frown</title>
@@ -100,48 +101,61 @@ let detached = `<g transform="translate(2.5, 129)">
       stroke-width="4"
     />
   </g>`
-
-let svgOptions:{
-    [key:string]:number | string
-} = {
-    mounth:'',
-    ear:'',
-}
 let svgContent = ref('')
 
-let optionChange = (type:string, svgValue:string) => {
-    svgOptions[type]= svgValue
-    let svgStr = ''
-    Object.keys(svgOptions).forEach(key=>{
-        svgStr += svgOptions[key]
-    })
-    svgContent.value = `
+let avatarClassObj = computed(()=>{
+  return [Store.avatarShape]
+})
+let avatarStyleObj = computed(()=>{
+  console.log(Store.avatarBorder)
+  if(Store.avatarBorder==='transparent'){
+    return ''
+  }else{
+    return 'border:10px solid'+Store.avatarBorder
+  }
+  
+})
+
+let optionChange = (type: string, svgValue: string) => {
+  // 更改头像属性
+  Store.changeSvgOptions(type, svgValue)
+  // 拆分对象变成字符串
+  let svgStr = ''
+  Object.keys(Store.svgOptions).forEach(key => {
+    svgStr += Store.svgOptions[key]
+  })
+  // 渲染
+  svgContent.value = `
      <svg 
-        width='250' height='250'
+        width='280' height='280'
         preserveAspectRatio="xMidYMax meet"
         fill="none"
         xmlns='http://wwww.w3.org/2000/svg'>
         ${svgStr}
     </svg>
     `
-}   
+}
 
 onMounted(() => {
-  console.log(store.count)
+
 })
 
 </script>
 <style scoped lang='scss'>
 .vue-color-avatar {
-    width: 280px;
-    height: 280px;
-    border-radius: 25px;
-    border: 1px solid pink;
-    background-color: #fff;
+  width: 280px;
+  height: 280px;
+  background-color: #fff;
 }
 
 .options {
-    margin-top: 20px;
-    background-color: #d4d4d4;
+  margin-top: 20px;
+  background-color: #d4d4d4;
+}
+.circle{
+  border-radius: 50%;
+}
+.squircle{
+  border-radius: 20px;
 }
 </style>
