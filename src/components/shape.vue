@@ -1,8 +1,8 @@
 <template>
     <ul :class="[className]">
-        <li v-for="item, index in group" :key="index">
-            <div :class="['item', item.shape, { 'active': currentIndex === index }]"
-                :style="{ 'background-color': item.color }" @click="itemChange(index, item)">
+        <li v-for="item,index in group" :key="index">
+            <div :class="itemClassObj(item)" :style="{ 'background-color': item }"
+                @click="itemChange(item)">
             </div>
         </li>
     </ul>
@@ -13,28 +13,31 @@ import { useStore } from '@/store/index.ts'
 
 let Store = useStore()
 let props = defineProps(['group', 'className'])
+let currentIndex = ref('')
 
-let currentIndex = ref(0)
-
-let itemChange = (index: number, item) => {
-    currentIndex.value = index
-    if (props.className === 'shape-container') {
-        Store.avatarShape = item.shape
-    }else if(props.className === 'border-container'){
-        Store.avatarBorder = item.color
+let itemClassObj = computed((item) => {
+    return (item) => {
+        return [
+            'itemDiv',
+            props.className==='shape-container'? item:'',
+            { 'active': currentIndex.value === item }
+        ]
     }
+})
+
+let itemChange = (item) => {
+    if (props.className === 'shape-container') {
+        Store.avatarShape = item
+    } else if (props.className === 'border-container') {
+        Store.avatarBorder = item
+    }
+    currentIndex.value = item
 }
 onMounted(() => {
     if (props.className === 'shape-container') {
-        if (Store.avatarShape == 'circle') {
-            currentIndex.value = 0
-        } else if (Store.avatarShape == 'square') {
-            currentIndex.value = 1
-        } else {
-            currentIndex.value = 2
-        }
-    }else if(props.className === 'border-container'){
-        
+        currentIndex.value =  Store.avatarShape
+    } else if (props.className === 'border-container') {
+        currentIndex.value =  Store.avatarBorder
     }
 })
 </script>
@@ -46,7 +49,7 @@ ul {
 }
 
 .shape-container {
-    .item {
+    .itemDiv {
         width: 24px;
         height: 24px;
         background-color: hsl(211, 19%, 70%);
@@ -69,7 +72,7 @@ ul {
 .border-container {
     flex-wrap: wrap;
 
-    .item {
+    .itemDiv {
         width: 20px;
         height: 20px;
         border-radius: 50%;

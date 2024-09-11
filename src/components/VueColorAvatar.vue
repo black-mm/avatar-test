@@ -107,7 +107,6 @@ let avatarClassObj = computed(()=>{
   return [Store.avatarShape]
 })
 let avatarStyleObj = computed(()=>{
-  console.log(Store.avatarBorder)
   if(Store.avatarBorder==='transparent'){
     return ''
   }else{

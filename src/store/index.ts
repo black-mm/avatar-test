@@ -6,7 +6,7 @@ export const useStore = defineStore("store", () => {
   type shape = 'circle'|'square'|'squircle'
   let avatarShape  = ref<shape>('squircle')
   // 头像边框
-  let avatarBorder = ref('transparent')
+  let avatarBorder = ref('#6BD9E9')
 
   // 头像属性集合
   let svgOptions: {

@@ -7,6 +7,10 @@
         <SectionWrapper title="边框颜色">
             <Shape :group="SETTINGS.borderGroup" className="border-container"></Shape>
         </SectionWrapper>
+
+        <test>
+            <h1>0000</h1>
+        </test>
     </div>
 </template>
 
@@ -14,7 +18,7 @@
 import SectionWrapper from '../components/SectionWrapper.vue';
 import Shape from '../components/Shape.vue';
 import {SETTINGS} from '@/utils/constant.ts'
-
+import test from './test.vue'
 </script>
 
 <style scoped lang="scss">
